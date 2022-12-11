@@ -1,0 +1,67 @@
+{% extends 'Divine/base.html' %}
+
+
+
+{% block title %} Materials for Spiritual & Physical Growth {% endblock %}
+
+{% block GalleryActive %} clicked {% endblock %}
+
+    
+
+{% block body %} 
+<div class="container-gap-white">
+
+    <h1 class="h1-color"> Welcome to our Gallery </h1>
+          
+     <!-- The search field -->
+     <form method="GET" action="{% url 'search_gallery' %}">
+        <fieldset class="field-container">
+            <input type="text" name="search"  placeholder="Search our gallery" class="field" value="{{ search_term }}" />
+            <div class="icons-container">
+                <div class="icon-search" onclick="document.forms[0].submit()"></div>
+                <div class="icon-close">
+                <div class="x-up"></div>
+                <div class="x-down"></div>            
+            </div>
+        </fieldset>
+    </form>
+
+
+    <div class="gallery-container">
+        {% for pic in gallery %}
+        <div class="polaroid">
+            <img src="{{ pic.image.url}}" alt="gallery image" style="width:100%" onclick="window.open(this.src)">
+            <div class="gallery-text">
+            <p>{{ pic.description }}</p>
+            </div>
+        </div>
+        {% empty %}
+            <h2>No item found !</h2>
+        {% endfor %}
+    </div>            
+        
+
+    <div class="pagination flex-row">
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                {% comment %} <a href='?page=1' class="page">First</a> {% endcomment %}
+                <a href='?page={{ page_obj.previous_page_number}}'><i class="fas fa-chevron-left"></i></a>
+            {% endif %}
+    
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a style='background:#3f4954;' href='?page?{{ num }}' class="page">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href='?page={{num}}'>{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+    
+            {% if page_obj.has_next %}
+                <a href='?page={{ page_obj.next_page_number}}'><i class="fas fa-chevron-right"></i></a>
+                {% comment %} <a href='?page={{ page_obj.paginator.num_pages }}' class="page">Last</a> {% endcomment %}
+            {% endif %}
+        {% endif %}  
+     </div>            
+</div>
+
+{% endblock %} 

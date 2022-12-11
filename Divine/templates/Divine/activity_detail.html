@@ -1,0 +1,79 @@
+{% extends 'Divine/base.html' %}
+
+
+
+{% block title %} Activity & Event Details {% endblock %}
+    
+
+{% block body %} 
+<div class="container-gap">
+    <div class="detail-card">
+        <div>
+            <img class="event-img" src="{{ activity.image.url }}" width="60%" height="450px" >
+            <h2>{{ activity.title }}</h2>
+            <p style="text-align: justify;">{{ activity.description }}</p>
+        </div>
+
+
+
+
+        <h2 class="text-center">Comments({{comments.count}})</h2>
+
+        {% if user.is_authenticated %}
+                <form action="{% url 'comment' activity.id %}" method="POST">
+                {% csrf_token %}
+                    <div class="detail-input">
+                        <input type="text" name="comment" class="form-control" placeholder="Make a comment" required>
+                    </div>
+                    <button class="btn form-btn" id="comment-btn" type="submit">Comment</button>
+                </form>
+        {% else %}
+            <p>
+                {% comment %} <a id="review-login" href = "{% url 'login' %}?next={{request.path}}">Login</a> {% endcomment %}
+                <a id="review-login" href = "">Login</a>
+                <span id="auth">in order to make a comment! </span>
+            </p>   
+        {% endif %}
+
+
+        {% for c in comments %}
+
+            <div class="comment-thread">
+                <!-- Comment 1 start -->
+                <div class="comment" style="margin-bottom: 3rem;">
+                    <div class="comment-heading" id="comment-head"> 
+                        <div>
+                            <img class="comment-avatar" src="{{ c.user.image.url}}" width="70vw" height="70vw"/>
+                        </div>                   
+                        <div class="comment-info">
+                            <a href="#" class="comment-author">
+                                <h3>{{ c.user.username}} {{ c.user.last_name}}</h3>
+                            </a>
+                            <p class="m-0 comment-date">
+                                Commented On &bull; {{ c.date_commented }}
+                            </p>
+                        </div>
+                    </div>
+            
+                    <div class="comment-body">
+                        <p>
+                            {{ c.comment }}
+                        </p>
+                        {% if c.user == user %}
+                        <button type="button">
+                            <a href="{% url 'update_comment' c.id %}">Edit Comment</a>
+                        </button>
+                        {% endif %}                    
+                    </div>       
+                
+                </div>
+                <!-- Comment 1 end -->
+            </div> 
+
+        {% endfor %}        
+
+    </div>
+
+</div>
+
+{% endblock %} 

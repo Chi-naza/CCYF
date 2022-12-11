@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}{% endblock %}| CCYF</title>
+
+    <link rel="stylesheet" href="{% static 'Divine/css/blog.css' %}">
+    <!-- font-awesome icons  -->
+    <link rel="stylesheet" href="{% static 'Divine/css/all.css' %}">
+    <!-- for the carousel -->
+    <link rel="stylesheet" href="{% static 'Divine/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Divine/css/owl.theme.default.min.css' %}">
+    <!-- for AOS library -->
+    <link rel="stylesheet" href="{% static 'Divine/css/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'Divine/css/detail.css' %}">
+    <link rel="stylesheet" href="{% static 'Divine/css/lists.css' %}">
+    <link rel="stylesheet" href="{% static 'Divine/css/search.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <style>   </style>
+    
+    {% block CSS %}{% endblock %}
+  
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-menu flex-row">
+            <div class="nav-brand">
+                <a href="" class="text-grey">CCYF HOME</a>
+            </div>
+
+            <div class="toggle-collapse">
+                <div class="toggle-icons">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+
+            <div>
+                <ul class="nav-items">
+                    <li class="nav-link">
+                        <a href="{% url 'home' %}" class="{% block homeActive %} {% endblock %}">Home</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="{% url 'members_list' %}" class="{% block MembersActive %} {% endblock %}">Members</a>
+                    </li>                   
+                    <li class="nav-link">
+                        <a href="{% url 'ebook_list' %}" class="{% block EbooksActive %} {% endblock %}">Ebooks</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="{% url 'growth_materials_list' %}" class="{% block GrowthMaterialsActive %} {% endblock %}">Growth Materials</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="{% url 'gallery_list' %}" class="{% block GalleryActive %} {% endblock %}">Gallery</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="gallery_list.html" class="{% block ProfileActive%} {% endblock %}">Profile</a>
+                    </li>
+                    <li class="nav-link" {% block active %} {% endblock %}>
+                        <a href="">Login</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <main>
+        <div >
+            {% for message in messages %}
+                <div id="for-message" >
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{ message | safe }}
+                </div>
+            {% endfor %}
+        </div>        
+        
+        {% block body %} {% endblock %} 
+
+    </main>
+
+
+    <footer>
+        <div class="container">
+            <div class="about-us" data-aos="fade-right" data-aos-delay="200">
+                <h2>About CCYF</h2>
+                <p>
+                    {{homedata.about}}
+                </p>
+            </div>
+    
+            <div class="newsletter-footer about-us" data-aos="fade-right" data-aos-delay="200">
+                <h2>Motto of CCYF</h2>
+                <p>{{homedata.motto}}</p>               
+            </div>
+    
+            <div class="instagram" data-aos="fade-left" data-aos-delay="200">
+                <h2>A Peek in the Gallery</h2>
+                <div class="flex-row">
+                    <img src="{{ homedata.grid1.url}}" alt="">
+                    <img src="{{ homedata.grid2.url}}" alt="">
+                    <img src="{{ homedata.grid3.url}}" alt="">
+                </div>
+                <div class="flex-row">
+                    <img src="{{ homedata.grid4.url}}" alt="">
+                    <img src="{{ homedata.grid5.url}}" alt="">
+                    <img src="{{ homedata.grid6.url}}" alt="">
+                </div>
+            </div>
+    
+            <div class="follow" data-aos="fade-left" data-aos-delay="200">
+                <h2>Connect With Us</h2>
+                <p>Join us on WhatsApp Now</p>
+                <div class="follow-social">
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-twitter"></i>
+                    <a href="https://api.whatsapp.com/send?phone={{homedata.whatsapp}}">
+                        <i class="fab fa-whatsapp wa"></i>
+                    </a>
+                </div>
+            </div> 
+        </div>
+
+        <div class="rights flex-row">
+            <h4 class="text-grey">
+                Copyright &COPY;2021 All Rights Reserved
+            </h4>
+        </div>
+        <div class="rights flex-row">
+            <h4 class="text-grey">
+                <span><a href="">Nazzy World</a></span>
+            </h4>
+        </div>
+
+        <div class="arrow-up">
+            <span><i class="fas fa-arrow-circle-up fa-3x"></i></span>
+        </div>
+        
+    </footer>
+    
+    <script type="text/javascript" src="{% static 'Divine/js/Jquery3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Divine/js/owl.carousel.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'Divine/js/blog.js' %}"></script>
+    <script src="{% static 'Divine/js/aos.js' %}"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+    <script>
+        AOS.init();
+    </script>
+  
+</body>
+
+</html>

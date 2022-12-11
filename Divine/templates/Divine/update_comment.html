@@ -1,0 +1,25 @@
+{% extends 'Divine/base.html'%}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Edit & Update Comment {% endblock %}
+
+
+
+{% block body %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <fieldset>
+            <legend>Edit Comment</legend>
+            {{ form|crispy }}
+        </fieldset>
+
+        <div>
+            <button type="submit">Update</button>
+        </div>
+
+    </form>
+
+{% endblock %}

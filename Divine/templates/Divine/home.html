@@ -1,0 +1,229 @@
+{% extends 'Divine/base.html' %}
+
+
+
+{% block title %} Home {% endblock %}
+
+{% block homeActive %}clicked{% endblock %}
+    
+
+{% block body %} 
+
+    <section class="site-title" style="--backImage: url('{{ homedata.background_image.url}}')">
+        <div class="site-background" data-aos="fade-up" data-aos-delay="400" data-aos-easing="">
+            <h3>Christ Church Youth Fellowship</h3>
+            <br>
+            <h1>House On Fire</h1>
+            <a href="{% url 'members_list' %}">
+                <button class="btn">See Members</button>
+            </a>
+        </div>
+    </section>
+    <section>
+        <div class="custom-shape-divider-bottom-1670205351">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
+            </svg>
+        </div>
+    </section>  
+
+    <section id="sectionDivider">
+        <h1 class="exco">Executives</h1>
+        <div class="blog">
+            <div class="container">
+                <div class="owl-carousel owl-theme blog-post">
+
+                    {% for e in executives %}
+                    <div class="blog-content" data-aos="fade-left" data-aos-delay="200">
+                        <div class="blog-img">
+                            <img src="{{ e.image.url }}" alt="{{ e.username }} image">
+                        </div>
+                        <div class="blog-title">
+                            <h3>{{ e.last_name }} {{ e.username }} {{ e.first_name}}</h3>                               
+                            <p>{{ e.dept }}</p>
+                            <p>{{ e.gender }}</p>
+                            <p>({{ e.position }})</p>
+                            <a href="{{ e.get_absolute_url }}">
+                                <button class="btn blog-btn">More Details</button>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}  
+                    
+                </div>
+                <div class="owl-navigation">
+                    <span class="owl-nav-prev">
+                        <i class="fas fa-long-arrow-alt-left"></i>
+                    </span>
+                    <span class="owl-nav-next">
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="container">
+        <h1 class="exco">Activities & Events</h1>        
+        <div class="site-content">
+            <div class="posts">
+
+                {% for a in activities %}
+                <div class="post-content" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="post-image">
+                        <div>
+                            <img src="{{ a.image.url }}" alt="blog post one" onclick="window.open(this.src)">
+                        </div>
+                        <div class="post-info flex-row">
+                            <span>
+                                <i class="fas fa-user text-grey"></i>
+                                &nbsp;&nbsp;{{ a.user.username}}
+                            </span>
+                            <span></span> <span></span> <span></span>
+                            <span>
+                                <i class="fas fa-calendar-alt text-grey"></i>
+                                &nbsp;&nbsp;{{ a.date_of_event}}
+                            </span>                            
+                        </div>
+                    </div>
+                    <div class="post-title">
+                        <a href="">
+                            {{ a.title }}
+                        </a>
+                        <p>
+                            {{ a.description|truncatewords:40 }}
+                        </p>
+                        <a href="{{ a.get_absolute_url }}">
+                            <button class="btn post-btn">Read More &nbsp;<i class="fas fa-arrow-right"></i></button>
+                        </a>
+                    </div>
+                    <hr>
+                </div>
+                <hr>
+                {% empty %}
+                    <h2>No item found !</h2>             
+                {% endfor %}
+
+                <div class="pagination flex-row">
+                {% if is_paginated %}
+                    {% if page_obj.has_previous %}
+                        {% comment %} <a href='?page=1' class="page">First</a> {% endcomment %}
+                        <a href='?page={{ page_obj.previous_page_number}}'><i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+            
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a style='background:#3f4954;' href='?page?{{ num }}' class="page">{{ num }}</a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href='?page={{num}}'>{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+            
+                    {% if page_obj.has_next %}
+                        <a href='?page={{ page_obj.next_page_number}}'><i class="fas fa-chevron-right"></i></a>
+                        {% comment %} <a href='?page={{ page_obj.paginator.num_pages }}' class="page">Last</a> {% endcomment %}
+                    {% endif %}
+                {% endif %}  
+                </div> 
+
+            </div>
+
+            <aside class="sidebar">
+                <div class="category">
+                    <h2>Summary</h2>
+                    <ul class="category-list">
+                        <li class="list-items" data-aos="fade-left" data-aos-delay="100">
+                            <a href="">Upcoming Activities</a>
+                            <span>({{activityCount}})</span>
+                        </li>
+                        <li class="list-items" data-aos="fade-left" data-aos-delay="200">
+                            <a href="">Excos</a>
+                            <span>(14)</span>
+                        </li>
+                        <li class="list-items" data-aos="fade-left" data-aos-delay="300">
+                            <a href="">Our Members</a>
+                            <span>({{memberCount}})</span>
+                        </li>
+                        <li class="list-items" data-aos="fade-left" data-aos-delay="400">
+                            <a href="">Gallery</a>
+                            <span>({{galleryCount}})</span>
+                        </li>
+                        <li class="list-items" data-aos="fade-left" data-aos-delay="500">
+                            <a href="">Ebooks</a>
+                            <span>({{ebookCount}})</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="popular">
+                    <h2>Recent in Gallery</h2>
+
+                    {% for g in galleries %}
+                    <div class="post-content" data-aos="flip-up" data-aos-delay="200">
+                        <div class="post-image">
+                            <div>
+                                <img src="{{ g.image.url }}" alt="popular post one" onclick="window.open(this.src)">
+                            </div>
+                            <div class="post-info">                                    
+                                <span>{{ g.description }}</span>
+                            </div>
+                        </div>                            
+                    </div> 
+                    {% endfor %}                   
+
+                    <a href="{% url 'gallery_list' %}">
+                        <button class="btn post-btn">See More in Gallery &nbsp;</button>
+                    </a>
+                </div>
+
+                <div class="newsletter">
+                    <h2>Send Us A Message</h2>
+                    <p>Say your mind, reach out to your brothers and sisters even when you don't want your identity to be revealed. Don't die in silence ! You have ideas? Bring it on too</p>
+                    <p>If you wish to conceal your identity, you can choose not to add your Name and Phone Number. We want to hear you out !</p>
+                    <div class="form-container">
+                        <form action="">
+                            <input class="contact__input" type="text" placeholder="Full Name">
+                            <br> <br>
+                            <input class="contact__input" type="number" placeholder="Phone Number">
+                            <br> <br>
+                            <input class="contact__input" type="text" placeholder="Message Title" required>
+                            <br> <br>
+                            <textarea id="" cols="20" placeholder="Your Message Here" rows="8" name="msg" class="contact__input" required></textarea>
+                            <a>
+                                <button class="btn form-btn" type="submit">Send Message</button>
+                            </a>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="p-tags">
+                    <h2>Fellowship Units</h2>
+                    <div class="tags flex-row">
+                        <span class="tag" data-aos="flip-up" data-aos-delay="100">Praise Team</span>
+                        <span class="tag" data-aos="flip-up" data-aos-delay="200">Drama</span>
+                        <span class="tag" data-aos="flip-up" data-aos-delay="300">Ushery</span>
+                        <span class="tag" data-aos="flip-up" data-aos-delay="400">Library</span>
+                        <span class="tag" data-aos="flip-up" data-aos-delay="500">Welfare</span>
+                        <span class="tag" data-aos="flip-up" data-aos-delay="600">Counseling</span>
+                        <span class="tag" data-aos="flip-up" data-aos-delay="700">Media</span>
+                        <span class="tag" data-aos="flip-up" data-aos-delay="800">Event Planners</span>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+
+
+        <div id="birthday-btn">
+            <a href="{% url 'gallery_list' %}">
+                <button class="btn">Upcoming Birthdays &nbsp;</button>
+            </a>
+        </div>
+        
+    </section>
+
+{% endblock %}
+
+
+   

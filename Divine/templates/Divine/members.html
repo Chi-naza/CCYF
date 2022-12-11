@@ -1,0 +1,75 @@
+{% extends 'Divine/base.html' %}
+
+
+
+{% block title %} Our Members {% endblock %}
+
+{% block MembersActive %} clicked {% endblock %}
+
+    
+
+{% block body %} 
+<div class="container-gap-white">
+
+    <h1 class="h1-color"> Members </h1>
+          
+    <!-- The search field -->
+    <form method="GET" action="{% url 'search_members' %}">
+        <fieldset class="field-container">
+            <input type="text" name="search"  placeholder="Search for specific persons" class="field" value="{{ search_term }}" />
+            <div class="icons-container">
+                <div class="icon-search" onclick="document.forms[0].submit()"></div>
+                <div class="icon-close">
+                <div class="x-up"></div>
+                <div class="x-down"></div>            
+            </div>
+        </fieldset>
+    </form>
+        
+
+    <div class="member-container">
+        {% for m in members %}
+        <div class="member-content" data-aos="fade-left" data-aos-delay="200">
+            <div class="member-img">
+                <img src="{{ m.image.url }}" alt="{{ m.username }} image">
+            </div>
+            <div class="blog-title">
+                <h3>{{ m.last_name }} {{ m.username }} {{ m.first_name}}</h3>                               
+                <p>{{ m.dept}}</p>
+                <p>{{ m.gender}}</p>
+                <p>({{ m.position}})</p>
+                <a href="{{ m.get_absolute_url }}">
+                    <button class="btn blog-btn">More Details</button>
+                </a>
+            </div>
+        </div> 
+        {% empty %}
+            <h2>No item found !</h2>
+        {% endfor %}
+    </div>
+        
+
+    <div class="pagination flex-row">
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                {% comment %} <a href='?page=1' class="page">First</a> {% endcomment %}
+                <a href='?page={{ page_obj.previous_page_number}}'><i class="fas fa-chevron-left"></i></a>
+            {% endif %}
+    
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a style='background:#3f4954;' href='?page?{{ num }}' class="page">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href='?page={{num}}'>{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+    
+            {% if page_obj.has_next %}
+                <a href='?page={{ page_obj.next_page_number}}'><i class="fas fa-chevron-right"></i></a>
+                {% comment %} <a href='?page={{ page_obj.paginator.num_pages }}' class="page">Last</a> {% endcomment %}
+            {% endif %}
+        {% endif %}  
+     </div>            
+</div>
+
+{% endblock %} 

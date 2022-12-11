@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from django.contrib import messages
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)d1nwez=5fps+#%&i3#&xiq%x*hfknv9hgcc#51w4*=7z-f$ia'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
+print(SECRET_KEY)
+print(DEBUG)
 
 ALLOWED_HOSTS = []
 
@@ -37,6 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Divine',
+    'Dashboard',
+    'Accounts',
+    'Voting',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +80,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CCYF.wsgi.application'
+
+AUTH_USER_MODEL = 'Divine.CustomUser'
 
 
 # Database
@@ -115,9 +129,43 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# NEW SETTINGS FROM HERE
+
+LOGIN_REDIRECT_URL = 'home'
+
+LOGOUT_REDIRECT_URL = 'login'
+
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# for cripy form styling
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# login redirects
+# LOGIN_URL = '/accounts/login/'
+# LOGIN_REDIRECT_URL = '/'
+
+# where too go upon logout
+# LOGOUT_REDIRECT_URL = '/accounts/login'
+
+# for Django messages
+# MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
